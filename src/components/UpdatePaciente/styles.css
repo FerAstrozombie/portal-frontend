@@ -1,0 +1,75 @@
+.padre {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cabecera {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 50px;
+}
+
+#boton {
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    cursor: pointer;
+}
+
+.tituloCabecera {
+    margin: 0;
+}
+
+.datosPadre {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.datosPaciente {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.inputField {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.input {
+    border: none;
+
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.botonera{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 30px;
+}
