@@ -19,6 +19,17 @@ td {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    gap: 30px;
+}
+.busqueda{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.input{
+    height: 30px;
 }
 .binoculares{
     font-size: 2rem;
@@ -31,7 +42,31 @@ td {
     cursor: pointer;
 }
 .botones{
-    margin: 5px;
+    padding: 0px;
     border: none;
     background-color: transparent;
+}
+
+.ancla{
+    text-decoration: none;
+    color: white;
+}
+
+.botonAgregar{
+    border: none;
+    background-color: transparent;
+}
+.botonAgregar:hover{
+    background-color: green;
+}
+.botonesAcciones{
+    border: transparent;
+    background-color: transparent;
+    margin: 5px;
+}
+#avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
 }

@@ -1,0 +1,52 @@
+.icono{
+    width: 40px;
+}
+.boton{
+    border: none;
+    background-color: transparent;
+    color: red;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+.boton:hover{
+    cursor: pointer;
+}
+.datosPadres{
+    display: flex;
+    flex-direction: column;
+}
+.datosEmbarque{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: flex-end;
+}
+.cabecera{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.formLogin{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+}
+.botoneraDos{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+.inputField{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}

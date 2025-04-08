@@ -17,3 +17,12 @@ export const updatePaciente = async(id, body) => {
     const respuesta = await axios.patch(urlUpdate, body)
     return respuesta
 };
+
+export const createPaciente = async (formData) => {
+    let url = "http://localhost:8080/paciente";
+    return await axios.post(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+};

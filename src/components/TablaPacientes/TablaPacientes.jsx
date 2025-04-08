@@ -54,6 +54,9 @@ const TablaPacientes = () => {
             showConfirmButton: false,
             timer: 1500
         });
+        setTimeout(() => {
+            location.reload();
+        }, 1600);
     }
 
     const navigate = useNavigate();
@@ -67,19 +70,27 @@ const TablaPacientes = () => {
                 <div className="advertencia">
                     <h4 className="advertenciaTexto">No hay pacientes cargados</h4>
                     <h4 className="advertenciaTexto">Quieres cargar uno? Haz click en el siguiente link</h4>
-                    <a href="/savePaciente">Agregar paciente</a>
+                    <button className="botonAgregar">
+                        <a className="ancla" href="/nuevoPaciente">Agregar paciente</a>
+                    </button>
                 </div>
                 :
                 <div className="tabla">
                     <div className="buscador">
-                        <button className="botones">
-                            <img id="iconos" src="../../assets/search.svg" alt="" />
+                        <div className="busqueda">
+                            <button className="botones">
+                                <img id="iconos" src="../../assets/search.svg" alt="" />
+                            </button>
+                            <input onChange={searcher} value={search} className="input" type="text" placeholder="Buscar por dni" />
+                        </div>
+                        <button className="botones" onClick={() => navigate("/nuevoPaciente")}>
+                            <img id="iconos" src="../../assets/add.svg" alt="cargar paciente" />
                         </button>
-                        <input onChange={searcher} value={search} className="input" type="text" placeholder="Buscar por dni" />
                     </div>
                     <table>
                         <thead>
                             <tr>
+                                <th>Avatar</th>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>D.N.I.</th>
@@ -96,6 +107,7 @@ const TablaPacientes = () => {
                             {
                                 results.map(p => (
                                     <tr key={p._id}>
+                                        <td><img id="avatar" src={p.avatar} alt="avatar" /></td>
                                         <td>{p.nombre}</td>
                                         <td>{p.apellido}</td>
                                         <td>{p.dni}</td>
@@ -106,10 +118,10 @@ const TablaPacientes = () => {
                                         <td>{p.nacionalidad}</td>
                                         <td>{p.cobertura}</td>
                                         <td>
-                                            <button onClick={(e) => handleUpdate(p._id)(e)} className="botones">
+                                            <button onClick={(e) => handleUpdate(p._id)(e)} className="botonesAcciones">
                                                 <img id="iconos" src="../../assets/config.svg" alt="configurar" />
                                             </button>
-                                            <button onClick={(e) => handleClick(p._id)(e)} className="botones">
+                                            <button onClick={(e) => handleClick(p._id)(e)} className="botonesAcciones">
                                                 <img id="iconos" src="../../assets/trash.svg" alt="eliminar" />
                                             </button>
                                         </td>
