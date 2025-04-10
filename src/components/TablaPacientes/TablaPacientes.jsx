@@ -90,7 +90,7 @@ const TablaPacientes = () => {
                     <table>
                         <thead>
                             <tr>
-                                <th>Avatar</th>
+                                <th></th>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>D.N.I.</th>

@@ -7,15 +7,25 @@ export const deleteOperation = async (id) => {
 };
 
 export const getById = async (id) => {
-    let urlGet = `http://localhost:8080/paciente/${id}`;
-    const respuesta = await axios.get(urlGet);
-    return respuesta
+    try {
+        let urlGet = `http://localhost:8080/paciente/${id}`;
+        const respuesta = await axios.get(urlGet);
+        return respuesta
+        
+    } catch (error) {
+        console.log(error);
+        return error.response.status;
+        
+    }
 };
 
-export const updatePaciente = async(id, body) => {
+export const updatePaciente = async(id, formData) => {
     let urlUpdate = `http://localhost:8080/updatePaciente/${id}`;
-    const respuesta = await axios.patch(urlUpdate, body)
-    return respuesta
+    return await axios.patch(urlUpdate, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
 };
 
 export const createPaciente = async (formData) => {

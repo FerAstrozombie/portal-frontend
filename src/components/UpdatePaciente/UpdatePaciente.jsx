@@ -8,6 +8,7 @@ import "./styles.css";
 const UpdatePaciente = () => {
 
     const [data, setData] = useState({});
+    const [previewImage, setPreviewImage] = useState("");
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -19,7 +20,9 @@ const UpdatePaciente = () => {
         const data = await getById(location.state.id);
         const dataReal = data.data.paciente.message
         setData(dataReal)
+        setPreviewImage(dataReal.avatar || "");
     };
+
 
     const updateSchema = Yup.object().shape(
         {
@@ -54,28 +57,28 @@ const UpdatePaciente = () => {
             validationSchema={updateSchema}
             onSubmit={async (values) => {
 
-                const body = {
-                    nombre: values.nombre,
-                    apellido: values.apellido,
-                    dni: values.dni,
-                    email: values.email,
-                    direccion: values.direccion,
-                    codigoPostal: values.codigoPostal,
-                    fechaNacimiento: values.fechaNacimiento,
-                    nacionalidad: values.nacionalidad,
-                    cobertura: values.cobertura,
-                }
+                const formData = new FormData();
+                formData.append("nombre", values.nombre);
+                formData.append("apellido", values.apellido);
+                formData.append("dni", values.dni);
+                formData.append("email", values.email);
+                formData.append("direccion", values.direccion);
+                formData.append("codigoPostal", values.codigoPostal);
+                formData.append("fechaNacimiento", values.fechaNacimiento);
+                formData.append("nacionalidad", values.nacionalidad);
+                formData.append("cobertura", values.cobertura);
+                formData.append("imagenAvatar", values.image); // Aquí se agrega el archivo
                 const id = location.state.id
-                const response = await updatePaciente(id, body);
+                const response = await updatePaciente(id, formData);
                 if (response.status === 400) alert(JSON.stringify(response.data))
                 navigate("/");
             }}
         >
-            {({ isSubmitting, errors, touched, handleChange }) => (
+            {({ isSubmitting, errors, touched, handleChange, setFieldValue }) => (
                 <div className="padre">
                     <Form className="formLogin">
                         <div className="cabecera">
-                            <h2 className="tituloCabecera">Nuevo paciente</h2>
+                            <h2 className="tituloCabecera">Editar paciente</h2>
                             <button
                                 type="submit"
                                 id="boton"
@@ -92,7 +95,32 @@ const UpdatePaciente = () => {
                             </button>
                         </div>
                         <div className="datosPadre">
-                            <h3>Datos del paciente</h3>
+                            <div className="avatarPadre">
+                                <img className="avatar" src={previewImage} alt="avatar" />
+                                <button
+                                    className="botonAvatar"
+                                    type="button"
+                                    onClick={() => document.getElementById("hiddenFileInput").click()}
+                                >
+                                    <img id="iconos" src="../../assets/more.svg" alt="guardar" />
+                                </button>
+                                <input
+                                    id="hiddenFileInput"
+                                    type="file"
+                                    name="image"
+                                    style={{ display: "none" }}
+                                    accept="image/*"
+                                    onChange={(event) => {
+                                        const file = event.currentTarget.files[0];
+                                        if (file && !file.type.startsWith("image/")) {
+                                            alert("Por favor, selecciona un archivo de imagen válido.");
+                                            return;
+                                        }
+                                        setFieldValue("image", file); // Actualiza el valor en Formik
+                                        setPreviewImage(URL.createObjectURL(file)); // Actualiza la vista previa
+                                    }}
+                                />
+                            </div>
                             <div className="datosPaciente">
                                 <div className="inputField">
                                     <label htmlFor="nombre">Nombre</label>
@@ -186,26 +214,9 @@ const UpdatePaciente = () => {
                                 </div>
                             </div>
                             {isSubmitting ? (<p>Modificando...</p>) : null}
-                            <div className="botonera">
-                                <button
-                                    type="submit"
-                                    id="boton"
-                                >
-                                    <img id="iconos" src="../../assets/save.svg" alt="guardar" />
-                                    SAVE
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => navigate("/")}
-                                    id="boton"
-                                >
-                                    <img id="iconos" src="../../assets/back.svg" alt="guardar" />
-                                </button>
-                            </div>
                         </div>
                     </Form>
                 </div>
-
             )}
         </Formik>
     )
