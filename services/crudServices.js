@@ -15,7 +15,6 @@ export const getById = async (id) => {
     } catch (error) {
         console.log(error);
         return error.response.status;
-        
     }
 };
 
@@ -35,4 +34,22 @@ export const createPaciente = async (formData) => {
             "Content-Type": "multipart/form-data",
         },
     });
+};
+
+export const createCargador = async (formData) => {
+    console.log(formData);
+    let url = "http://localhost:8080/cargadores";
+    try {
+        const response = await axios.post(url, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data", // Necesario para enviar archivos
+            },
+        });
+        console.log(response);
+        
+        return response;
+    } catch (error) {
+        console.error("Error en la petición POST:", error);
+        throw error;
+    }
 };

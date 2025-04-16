@@ -91,7 +91,7 @@ const UpdatePaciente = () => {
                                 onClick={() => navigate("/")}
                                 id="boton"
                             >
-                                <img id="iconos" src="../../assets/back.svg" alt="guardar" />
+                                <img id="iconos" src="../../assets/back.svg" alt="volver" />
                             </button>
                         </div>
                         <div className="datosPadre">

@@ -1,9 +1,9 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { createPaciente } from "../../../services/crudServices.js";
-import "./styles.css";
-const NuevoPaciente = () => {
+import { createCargador } from "../../../services/crudServices.js";
+
+const Signup = () => {
 
     const navigate = useNavigate();
 
@@ -12,15 +12,10 @@ const NuevoPaciente = () => {
         apellido: "",
         dni: "",
         email: "",
-        direccion: "",
-        codigoPostal: "",
-        fechaNacimiento: "",
-        nacionalidad: "",
-        cobertura: "",
-        image: "",
+        contraseña: "",
     };
 
-    const pacienteSchema = Yup.object().shape(
+    const controladorSchema = Yup.object().shape(
         {
             nombre: Yup.string()
                 .min(3, "Nombre demasiado corto")
@@ -32,52 +27,45 @@ const NuevoPaciente = () => {
                 .required("D.N.I. requerido"),
             email: Yup.string()
                 .required("email requerido"),
-            direccion: Yup.string()
-                .required("Direccion requerido"),
-            codigoPostal: Yup.number()
-                .min(3, "Ingrese un codigo postal valido")
-                .required("Codigo postal requerido"),
-            fechaNacimiento: Yup.string()
-                .required("Fecha de nacimiento requerida"),
-            nacionalidad: Yup.string()
-                .required("Nacionalidad requerida"),
-            cobertura: Yup.string()
-                .required("Cobertura requerido"),
-            image: Yup.string()
+            contraseña: Yup.string()
+                .min(6, "Contraseña demasiado corta")
+                .required("Contraseña requerida"),
+            /* image: Yup.string() */
         }
     )
 
     return (
         <Formik
             initialValues={initialValues}
-            validationSchema={pacienteSchema}
+            validationSchema={controladorSchema}
             onSubmit={async (values) => {
                 const formData = new FormData();
                 formData.append("nombre", values.nombre);
                 formData.append("apellido", values.apellido);
                 formData.append("dni", values.dni);
                 formData.append("email", values.email);
-                formData.append("direccion", values.direccion);
-                formData.append("codigoPostal", values.codigoPostal);
-                formData.append("fechaNacimiento", values.fechaNacimiento);
-                formData.append("nacionalidad", values.nacionalidad);
-                formData.append("cobertura", values.cobertura);
-                formData.append("imagenAvatar", values.image); // Aquí se agrega el archivo
-                const response = await createPaciente(formData); // Asegúrate de que tu servicio soporte FormData
-                if (response.status === 400) alert(JSON.stringify(response.data));
-                navigate("/");
+                formData.append("contraseña", values.contraseña);
+                /* formData.append("imagenAvatar", values.image); // Aquí se agrega el archivo */
+                try {
+                    const response = await createCargador(formData);
+                    console.log("Respuesta del servidor:", response);
+                    if (response.status === 400) alert(JSON.stringify(response.data));
+                    navigate("/");
+                } catch (error) {
+                    console.error("Error al enviar la solicitud:", error);
+                }
             }}
         >
             {({ errors, touched, isSubmitting, setFieldValue }) => (
                 <div>
                     <Form className="formLogin">
                         <div className="cabecera">
-                            <h2>Paciente nuevo</h2>
+                            <h2>Nuevo cargador</h2>
                             <button
                                 type="submit"
                                 className="boton"
                             >
-                                <img className="icono" src="../../assets/add.svg" alt="cargar paciente" />
+                                <img className="icono" src="../../assets/add.svg" alt="cargar" />
                                 AGREGAR
                             </button>
                             <button
@@ -131,56 +119,16 @@ const NuevoPaciente = () => {
                                     }
                                 </div>
                                 <div className="inputField">
-                                    <label htmlFor="direccion">Direccion</label>
-                                    <Field id="direccion" type="text" name="direccion" placeholder="Direccion" className="input" />
+                                    <label htmlFor="cobertura">Contraseña</label>
+                                    <Field id="contraseña" type="text" name="contraseña" placeholder="Contraseña" className="input" />
                                     {
-                                        errors.direccion && touched.direccion &&
+                                        errors.contraseña && touched.contraseña &&
                                         (
-                                            <ErrorMessage name='direccion' component="div" className="error" />
+                                            <ErrorMessage name='contraseña' component="div" className="error" />
                                         )
                                     }
                                 </div>
-                                <div className="inputField">
-                                    <label htmlFor="codigoPostal">Codigo postal</label>
-                                    <Field id="codigoPostal" type="number" name="codigoPostal" placeholder="Codigo postal" className="input" />
-                                    {
-                                        errors.codigoPostal && touched.codigoPostal &&
-                                        (
-                                            <ErrorMessage name='codigoPostal' component="div" className="error" />
-                                        )
-                                    }
-                                </div>
-                                <div className="inputField">
-                                    <label htmlFor="fechaNacimiento">Fecha de nacimiento</label>
-                                    <Field id="fechaNacimiento" type="text" name="fechaNacimiento" placeholder="Fecha de nacimiento" className="input" />
-                                    {
-                                        errors.fechaNacimiento && touched.fechaNacimiento &&
-                                        (
-                                            <ErrorMessage name='fechaNacimiento' component="div" className="error" />
-                                        )
-                                    }
-                                </div>
-                                <div className="inputField">
-                                    <label htmlFor="nacionalidad">Nacionalidad</label>
-                                    <Field id="nacionalidad" type="text" name="nacionalidad" placeholder="Nacionalidad" className="input" />
-                                    {
-                                        errors.nacionalidad && touched.nacionalidad &&
-                                        (
-                                            <ErrorMessage name='nacionalidad' component="div" className="error" />
-                                        )
-                                    }
-                                </div>
-                                <div className="inputField">
-                                    <label htmlFor="cobertura">Cobertura</label>
-                                    <Field id="cobertura" type="text" name="cobertura" placeholder="Cobertura" className="input" />
-                                    {
-                                        errors.cobertura && touched.cobertura &&
-                                        (
-                                            <ErrorMessage name='cobertura' component="div" className="error" />
-                                        )
-                                    }
-                                </div>
-                                <div className="inputField">
+                                {/* <div className="inputField">
                                     <label htmlFor="image">Avatar</label>
                                     <input id="image" type="file" name="image" placeholder="image" className="input" onChange={(event) => {
                                         const file = event.currentTarget.files[0];
@@ -192,7 +140,7 @@ const NuevoPaciente = () => {
                                             <ErrorMessage name='image' component="div" className="error" />
                                         )
                                     }
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         {isSubmitting ? (<p>Agregando...</p>) : null}
@@ -201,7 +149,7 @@ const NuevoPaciente = () => {
                                 type="submit"
                                 className="boton"
                             >
-                                <img className="icono" src="../../assets/add.svg" alt="" />
+                                <img className="icono" src="../../assets/add.svg" alt="cargar" />
                                 AGREGAR
                             </button>
                             <button
@@ -214,10 +162,9 @@ const NuevoPaciente = () => {
                         </div>
                     </Form>
                 </div>
-
             )}
         </Formik>
     )
 }
 
-export default NuevoPaciente
+export default Signup

@@ -64,6 +64,10 @@ const TablaPacientes = () => {
         navigate("/updatePaciente", {state: {id}})
     }
 
+    const handleCredential = id => event => {
+        navigate("/credential", {state: {id}})
+    }
+
     return (
         <>
             {data.length === 0 ?
@@ -123,6 +127,9 @@ const TablaPacientes = () => {
                                             </button>
                                             <button onClick={(e) => handleClick(p._id)(e)} className="botonesAcciones">
                                                 <img id="iconos" src="../../assets/trash.svg" alt="eliminar" />
+                                            </button>
+                                            <button onClick={(e) => handleCredential(p._id)(e)} className="botonesAcciones">
+                                                <img id="iconos" src="../../assets/credential.svg" alt="eliminar" />
                                             </button>
                                         </td>
                                     </tr>
