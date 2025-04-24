@@ -37,19 +37,28 @@ export const createPaciente = async (formData) => {
 };
 
 export const createCargador = async (formData) => {
-    console.log(formData);
-    let url = "http://localhost:8080/cargadores";
+    let url = "http://localhost:8080/signup";
     try {
         const response = await axios.post(url, formData, {
             headers: {
-                "Content-Type": "multipart/form-data", // Necesario para enviar archivos
+                "Content-Type": "multipart/form-data",
             },
+            withCredentials: true,
         });
-        console.log(response);
-        
         return response;
     } catch (error) {
-        console.error("Error en la petición POST:", error);
-        throw error;
+        if (error.response) {
+            console.error("Error del servidor:", error.response.data);
+            if (error.response.data.error === "El email ya está registrado") {
+                throw new Error("El email ya está registrado");
+            }
+            throw new Error(error.response.data.error || "Error en el servidor");
+        } else if (error.request) {
+            console.error("Error de red o sin respuesta del servidor:", error.request);
+            throw new Error("No se pudo conectar con el servidor. Intenta nuevamente.");
+        } else {
+            console.error("Error desconocido:", error.message);
+            throw new Error(error.message || "Ocurrió un error desconocido");
+        }
     }
 };

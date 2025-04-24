@@ -96,7 +96,7 @@ const UpdatePaciente = () => {
                         </div>
                         <div className="datosPadre">
                             <div className="avatarPadre">
-                                <img className="avatar" src={previewImage} alt="avatar" />
+                                <img id="avatar" src={previewImage} alt="avatar" />
                                 <button
                                     className="botonAvatar"
                                     type="button"

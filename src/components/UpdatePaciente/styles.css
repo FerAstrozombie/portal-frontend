@@ -73,7 +73,7 @@ input[type=number]::-webkit-outer-spin-button {
     gap: 30px;
 }
 
-.avatar{
+#avatar{
     width: 150px;
     height: 150px;
     border-radius: 50%;

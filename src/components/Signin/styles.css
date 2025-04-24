@@ -1,0 +1,13 @@
+#datosEmbarque {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap:10px;
+}

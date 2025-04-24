@@ -111,7 +111,7 @@ const TablaPacientes = () => {
                             {
                                 results.map(p => (
                                     <tr key={p._id}>
-                                        <td><img id="avatar" src={p.avatar} alt="avatar" /></td>
+                                        <td><img id="avatarTabla" src={p.avatar} alt="avatar" /></td>
                                         <td>{p.nombre}</td>
                                         <td>{p.apellido}</td>
                                         <td>{p.dni}</td>

@@ -2,9 +2,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { createCargador } from "../../../services/crudServices.js";
+import { useState } from "react";
+import "./styles.css";
 
 const Signup = () => {
 
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const initialValues = {
@@ -12,7 +15,7 @@ const Signup = () => {
         apellido: "",
         dni: "",
         email: "",
-        contraseña: "",
+        password: "",
     };
 
     const controladorSchema = Yup.object().shape(
@@ -27,7 +30,7 @@ const Signup = () => {
                 .required("D.N.I. requerido"),
             email: Yup.string()
                 .required("email requerido"),
-            contraseña: Yup.string()
+            password: Yup.string()
                 .min(6, "Contraseña demasiado corta")
                 .required("Contraseña requerida"),
             /* image: Yup.string() */
@@ -44,20 +47,20 @@ const Signup = () => {
                 formData.append("apellido", values.apellido);
                 formData.append("dni", values.dni);
                 formData.append("email", values.email);
-                formData.append("contraseña", values.contraseña);
+                formData.append("password", values.password);
                 /* formData.append("imagenAvatar", values.image); // Aquí se agrega el archivo */
                 try {
                     const response = await createCargador(formData);
-                    console.log("Respuesta del servidor:", response);
-                    if (response.status === 400) alert(JSON.stringify(response.data));
-                    navigate("/");
+                    navigate("/signin");
                 } catch (error) {
-                    console.error("Error al enviar la solicitud:", error);
+                    setErrorMessage(error.message);
+                    console.log("Mensaje de error:", error.message);
                 }
             }}
         >
             {({ errors, touched, isSubmitting, setFieldValue }) => (
                 <div>
+                    {errorMessage && <p className="error">{errorMessage}</p>}
                     <Form className="formLogin">
                         <div className="cabecera">
                             <h2>Nuevo cargador</h2>
@@ -119,12 +122,12 @@ const Signup = () => {
                                     }
                                 </div>
                                 <div className="inputField">
-                                    <label htmlFor="cobertura">Contraseña</label>
-                                    <Field id="contraseña" type="text" name="contraseña" placeholder="Contraseña" className="input" />
+                                    <label htmlFor="password">Password</label>
+                                    <Field id="password" type="text" name="password" placeholder="Password" className="input" />
                                     {
-                                        errors.contraseña && touched.contraseña &&
+                                        errors.password && touched.password &&
                                         (
-                                            <ErrorMessage name='contraseña' component="div" className="error" />
+                                            <ErrorMessage name='password' component="div" className="error" />
                                         )
                                     }
                                 </div>
