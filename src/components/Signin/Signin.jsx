@@ -1,22 +1,25 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { createCargador } from "../../../services/crudServices.js";
+import { loginCargador } from "../../../services/crudServices.js";
+import { useState } from "react";
 import "./styles.css";
 
 const Signin = () => {
 
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const initialValues = {
-        nombre: "",
+        email: "",
         password: "",
     };
 
     const controladorSchema = Yup.object().shape(
         {
             email: Yup.string()
-                .required("email requerido"),
+                .email("Formato de email inválido")
+                .required("Email requerido"),
             password: Yup.string()
                 .min(6, "Contraseña demasiado corta")
                 .required("Contraseña requerida"),
@@ -29,21 +32,27 @@ const Signin = () => {
             validationSchema={controladorSchema}
             onSubmit={async (values) => {
                 const cargador = {
-                    nombre: values.nombre,
-                    email: values.email
-                }
+                    email: values.email,
+                    password: values.password,
+                };
                 try {
-                    const response = await createCargador(cargador);
-                    console.log(response);
-                    if (response.status === 400) alert(JSON.stringify(response.data))
-                    else (navigate("/"));
+                    const response = await loginCargador(cargador);
+                    navigate("/");
                 } catch (error) {
-                    console.error("Error al enviar la solicitud:", error);
+                    if (error.response) {
+                        setErrorMessage(error.response.data.error || "Error en el servidor");
+                    } else if (error.request) {
+                        setErrorMessage("No se pudo conectar con el servidor. Intenta nuevamente.");
+                    } else {
+                        setErrorMessage(error.message || "Ocurrió un error desconocido");
+                    }
+                    console.log("Mensaje de error:", error.message);
                 }
             }}
         >
             {({ errors, touched, isSubmitting }) => (
                 <div>
+                    {errorMessage && <p className="error">{errorMessage}</p>}
                     <Form className="formLogin">
                         <div className="cabecera">
                             <h2>Login</h2>
@@ -70,7 +79,7 @@ const Signin = () => {
                                     </div>
                                     <div className="inputField">
                                         <label htmlFor="password">Password</label>
-                                        <Field id="password" type="text" name="password" placeholder="Password" className="input" />
+                                        <Field id="password" type="password" name="password" placeholder="Password" className="input" />
                                         {
                                             errors.password && touched.password &&
                                             (
@@ -82,6 +91,7 @@ const Signin = () => {
                                 <button
                                     type="submit"
                                     className="boton"
+                                    disabled={isSubmitting}
                                 >
                                     <img className="icono" src="../../assets/add.svg" alt="login" />
                                     Login

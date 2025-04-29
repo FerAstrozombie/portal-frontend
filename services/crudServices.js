@@ -62,3 +62,32 @@ export const createCargador = async (formData) => {
         }
     }
 };
+
+export const loginCargador = async (formData) => {
+    let url = "http://localhost:8080/signin";
+    try {
+        const response = await axios.post(url, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Captura el mensaje de error del servidor
+            console.error("Error del servidor:", error.response.data);
+
+            // Lanza un error con el mensaje del backend
+            throw new Error(error.response.data.error || "Error en el servidor");
+        } else if (error.request) {
+            // Error de red o sin respuesta del servidor
+            console.error("Error de red o sin respuesta del servidor:", error.request);
+            throw new Error("No se pudo conectar con el servidor. Intenta nuevamente.");
+        } else {
+            // Otro tipo de error
+            console.error("Error desconocido:", error.message);
+            throw new Error(error.message || "Ocurrió un error desconocido");
+        }
+    }
+};

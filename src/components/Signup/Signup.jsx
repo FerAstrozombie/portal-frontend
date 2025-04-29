@@ -24,12 +24,14 @@ const Signup = () => {
                 .min(3, "Nombre demasiado corto")
                 .required("Nombre requerido"),
             apellido: Yup.string()
-                .required("Apellido requerida"),
-            dni: Yup.number()
+                .required("Apellido requerido"),
+            dni: Yup.string()
+                .matches(/^\d+$/, "D.N.I. debe contener solo números")
                 .min(7, "D.N.I. demasiado corto")
                 .required("D.N.I. requerido"),
             email: Yup.string()
-                .required("email requerido"),
+                .email("Formato de email inválido")
+                .required("Email requerido"),
             password: Yup.string()
                 .min(6, "Contraseña demasiado corta")
                 .required("Contraseña requerida"),
@@ -53,7 +55,7 @@ const Signup = () => {
                     const response = await createCargador(formData);
                     navigate("/signin");
                 } catch (error) {
-                    setErrorMessage(error.message);
+                    setErrorMessage(error.message || "Ocurrió un error inesperado. Intenta nuevamente.");
                     console.log("Mensaje de error:", error.message);
                 }
             }}
@@ -63,7 +65,7 @@ const Signup = () => {
                     {errorMessage && <p className="error">{errorMessage}</p>}
                     <Form className="formLogin">
                         <div className="cabecera">
-                            <h2>Nuevo cargador</h2>
+                            <h2>Registro</h2>
                             <button
                                 type="submit"
                                 className="boton"
@@ -151,6 +153,7 @@ const Signup = () => {
                             <button
                                 type="submit"
                                 className="boton"
+                                disabled={isSubmitting}
                             >
                                 <img className="icono" src="../../assets/add.svg" alt="cargar" />
                                 AGREGAR
